@@ -15,17 +15,16 @@ namespace SpeedTest
 
         public SpeedTestHttpClient()
         {
-            var frameworkInfo = RuntimeInformation.FrameworkDescription.Split();
-            var frameworkName = $"{frameworkInfo[0]}{frameworkInfo[1]}";
+            var osInfo = Environment.OSVersion.VersionString;
 
-            var osInfo = RuntimeInformation.OSDescription.Split();
+            var arch = System.Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
 
             DefaultRequestHeaders.Add("Accept", "text/html, application/xhtml+xml, */*");
             DefaultRequestHeaders.Add("User-Agent", string.Join(" ", new string[]
             {
                 "Mozilla/5.0",
-                $"({osInfo[0]}-{osInfo[1]}; U; {RuntimeInformation.ProcessArchitecture}; en-us)",
-                $"{frameworkName}/{frameworkInfo[2]}",
+                $"({osInfo}; U; {arch}; en-us)",
+                ".Net Framework 4.5",
                 "(KHTML, like Gecko)",
                 $"SpeedTest.Net/{typeof(ISpeedTestClient).Assembly.GetName().Version}"
             }));
@@ -35,8 +34,10 @@ namespace SpeedTest
         {
             var data = await GetStringAsync(AddTimeStamp(new Uri(url)));
             var xmlSerializer = new XmlSerializer(typeof(T));
-            using var reader = new StringReader(data);
-            return (T)xmlSerializer.Deserialize(reader);
+            using (var reader = new StringReader(data))
+            {
+                return (T) xmlSerializer.Deserialize(reader);
+            }
         }
 
         private static Uri AddTimeStamp(Uri address)

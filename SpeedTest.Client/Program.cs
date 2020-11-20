@@ -43,11 +43,19 @@ namespace SpeedTest.Client
         {
             Console.WriteLine();
             Console.WriteLine("Selecting best server by distance...");
-            var servers = settings.Servers.Take(10).ToList();
+            var servers = settings.Servers.Take(5).ToList();
 
             foreach (var server in servers)
             {
-                server.Latency = client.TestServerLatency(server);
+                try
+                {
+                    server.Latency = client.TestServerLatency(server);
+                }
+                catch (Exception)
+                {
+                    server.Latency = Int32.MaxValue;
+                }
+
                 PrintServerDetails(server);
             }
             return servers;

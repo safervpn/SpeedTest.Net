@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/safervpn/SpeedTest.Net/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/safervpn/SpeedTest.Net</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>A C# port of speedtest-cli utility, for .net framework 4.5.</releaseNotes>
+    <copyright>Copyright (c) Perimeter81, 2020</copyright>
+    <tags>speedtest speedtest.net</tags>
+
+    <dependencies>
+      <group targetFramework="net45">
+      </group>
+    </dependencies>
+  </metadata>
+</package>
