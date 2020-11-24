@@ -184,3 +184,4 @@ Desktop.ini
 $RECYCLE.BIN/
 /.vs/slnx.sqlite
 /.vs/NSpeedTest/v15/sqlite3/storage.ide
+*.nupkg
