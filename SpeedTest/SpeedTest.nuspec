@@ -10,12 +10,12 @@
     <projectUrl>https://github.com/safervpn/SpeedTest.Net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>A C# port of speedtest-cli utility, for .net framework 4.5.</releaseNotes>
+    <releaseNotes>A C# port of speedtest-cli utility</releaseNotes>
     <copyright>Copyright (c) Perimeter81, 2020</copyright>
     <tags>speedtest speedtest.net</tags>
 
     <dependencies>
-      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework="netstandard2.1" />
     </dependencies>
   </metadata>
 </package>
