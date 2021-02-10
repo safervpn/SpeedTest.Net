@@ -68,7 +68,7 @@ namespace SpeedTest
         }
 
         /// <inheritdoc />
-        public int TestServerLatency(Server server, int retryCount = 3)
+        public int TestServerLatency(Server server, int retryCount = 3, CancellationToken cancellationToken = default)
         {
             var latencyUri = CreateTestUrl(server, "latency.txt");
             var timer = new Stopwatch();
@@ -81,7 +81,7 @@ namespace SpeedTest
                     try
                     {
                         timer.Start();
-                        testString = client.GetStringAsync(latencyUri).ConfigureAwait(false).GetAwaiter().GetResult();
+                        testString = client.GetStringAsync(latencyUri, cancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
                     catch (Exception)
                     {
@@ -103,33 +103,33 @@ namespace SpeedTest
         }
 
         /// <inheritdoc />
-        public double TestDownloadSpeed(Server server, int simultaneousDownloads = 2, int retryCount = 2)
+        public double TestDownloadSpeed(Server server, int simultaneousDownloads = 2, int retryCount = 2, CancellationToken cancellationToken = default)
         {
             var testData = GenerateDownloadUrls(server, retryCount);
 
             return TestSpeed(testData, async (client, url) =>
             {
-                var data = await client.GetByteArrayAsync(url).ConfigureAwait(false);
+                var data = await client.GetByteArrayAsync(url, cancellationToken).ConfigureAwait(false);
                 return data.Length;
-            }, simultaneousDownloads);
+            }, simultaneousDownloads, cancellationToken);
         }
         
         /// <inheritdoc />
-        public double TestUploadSpeed(Server server, int simultaneousUploads = 2, int retryCount = 2)
+        public double TestUploadSpeed(Server server, int simultaneousUploads = 2, int retryCount = 2, CancellationToken cancellationToken = default)
         {
             var testData = GenerateUploadData(retryCount);
             return TestSpeed(testData, async (client, uploadData) =>
             {
-                await client.PostAsync(server.Url, new StringContent(uploadData));
+                await client.PostAsync(server.Url, new StringContent(uploadData), cancellationToken);
                 return uploadData.Length;
-            }, simultaneousUploads);
+            }, simultaneousUploads, cancellationToken);
         }
 
         #endregion
 
         #region Helpers
 
-        private static double TestSpeed<T>(IEnumerable<T> testData, Func<HttpClient, T, Task<int>> doWork, int concurrencyCount = 2)
+        private static double TestSpeed<T>(IEnumerable<T> testData, Func<SpeedTestHttpClient, T, Task<int>> doWork, int concurrencyCount = 2, CancellationToken cancellationToken = default)
         {
             var timer = new Stopwatch();
             var throttler = new SemaphoreSlim(concurrencyCount);
@@ -137,7 +137,8 @@ namespace SpeedTest
             timer.Start();
             var downloadTasks = testData.Select(async data =>
             {
-                await throttler.WaitAsync().ConfigureAwait(false);
+                await throttler.WaitAsync(cancellationToken).ConfigureAwait(false);
+
                 var client = new SpeedTestHttpClient();
                 try
                 {

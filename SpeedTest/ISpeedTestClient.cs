@@ -1,4 +1,5 @@
-﻿using SpeedTest.Models;
+﻿using System.Threading;
+using SpeedTest.Models;
 
 namespace SpeedTest
 {
@@ -14,18 +15,18 @@ namespace SpeedTest
         /// Test latency (ping) to server
         /// </summary>
         /// <returns>Latency in milliseconds (ms)</returns>
-        int TestServerLatency(Server server, int retryCount = 3);
+        int TestServerLatency(Server server, int retryCount = 3, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Test download speed to server
         /// </summary>
         /// <returns>Download speed in Kbps</returns>
-        double TestDownloadSpeed(Server server, int simultaneousDownloads = 2, int retryCount = 2);
+        double TestDownloadSpeed(Server server, int simultaneousDownloads = 2, int retryCount = 2, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Test upload speed to server
         /// </summary>
         /// <returns>Upload speed in Kbps</returns>
-        double TestUploadSpeed(Server server, int simultaneousUploads = 2, int retryCount = 2);
+        double TestUploadSpeed(Server server, int simultaneousUploads = 2, int retryCount = 2, CancellationToken cancellationToken = default);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Xunit;
 
 namespace SpeedTest.Tests
@@ -62,6 +63,26 @@ namespace SpeedTest.Tests
             var speed = _speedTestClientClient.TestUploadSpeed(settings.Servers.First(), settings.Upload.ThreadsPerUrl);
 
             Assert.True(speed > 0);
+        }
+
+        [Fact]
+        public void Should_cancel_download_speed()
+        {
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(100);
+
+            var settings = _speedTestClientClient.GetSettings();
+            Assert.Throws<AggregateException>(() => _speedTestClientClient.TestDownloadSpeed(settings.Servers.First(), settings.Download.ThreadsPerUrl, 2, cts.Token));
+        }
+
+        [Fact]
+        public void Should_cancel_upload_speed()
+        {
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(100);
+
+            var settings = _speedTestClientClient.GetSettings();
+            Assert.Throws<AggregateException>(() => _speedTestClientClient.TestUploadSpeed(settings.Servers.First(), settings.Upload.ThreadsPerUrl, 2, cts.Token));
         }
     }
 }
