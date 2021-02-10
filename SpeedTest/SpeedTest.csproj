@@ -10,7 +10,7 @@
     <PackOnBuild>true</PackOnBuild>
     <Authors>Uladzimir Kazakevich,Brendan Grant,Chino Chang</Authors>
     <PackageId>SpeedTest.Net</PackageId>
-    <PackageVersion>1.5.0</PackageVersion>
+    <PackageVersion>1.6.0</PackageVersion>
     <PackageProjectUrl>https://github.com/JoyMoe/SpeedTest.Net</PackageProjectUrl>
     <PackageLicense>LICENSE</PackageLicense>
     <Title>SpeedTest.Net</Title>
